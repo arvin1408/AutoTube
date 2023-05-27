@@ -1,6 +1,8 @@
 from moviepy.editor import *
 import random
 import os
+import time
+
 
 dir_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -35,6 +37,8 @@ class CreateMovie():
 
     @classmethod
     def CreateMP4(cls, post_data):
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        video_filename = f"video-{timestr}.mp4"
 
         clips = []
         for post in post_data:
@@ -94,18 +98,21 @@ class CreateMovie():
         music = music.set_duration(59)
 
         new_audioclip = CompositeAudioClip([music]+notification_sounds)
-        clip.write_videofile(f"video_clips.mp4", fps = 24)
+        clip.write_videofile(video_filename, fps = 24)
 
-        clip = VideoFileClip("video_clips.mp4",audio=False)
+        clip = VideoFileClip(video_filename, audio=False)
         clip = CompositeVideoClip([clip] + text_clips)
         clip.audio = new_audioclip
-        clip.write_videofile("video.mp4", fps = 24)
+        clip.write_videofile(video_filename, fps = 24)
 
+        # Remove existing file - only if filenames overwritten
+        print(video_filename)
+        # if os.path.exists(os.path.join(dir_path, video_filename)):
+        #     os.remove(os.path.join(dir_path, video_filename))
+        # else:
+        #     print(os.path.join(dir_path, video_filename))
         
-        if os.path.exists(os.path.join(dir_path, "video_clips.mp4")):
-            os.remove(os.path.join(dir_path, "video_clips.mp4"))
-        else:
-            print(os.path.join(dir_path, "video_clips.mp4"))
+        return video_filename
 
 if __name__ == '__main__':
     print(TextClip.list('color'))

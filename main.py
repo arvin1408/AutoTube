@@ -21,7 +21,7 @@ redditbot = RedditBot()
 while True:
 
     # Gets our new posts pass if image related subs. Default is memes
-    posts = redditbot.get_posts("memes")
+    posts = redditbot.get_posts("wholesomememes")
 
     # Create folder if it doesn't exist
     redditbot.create_data_folder()
@@ -36,12 +36,12 @@ while True:
     dt_string = date.today().strftime("%A %B") + f" {DAY}"
 
     # Create the movie itself!
-    CreateMovie.CreateMP4(redditbot.post_data)
+    video_title = CreateMovie.CreateMP4(redditbot.post_data)
 
     # Video info for YouTube.
     # This example uses the first post title.
     video_data = {
-            "file": "video.mp4",
+            "file": video_title,
             "title": f"{redditbot.post_data[0]['title']} - Dankest memes and comments {dt_string}!",
             "description": "#shorts\nGiving you the hottest memes of the day with funny comments!",
             "keywords":"meme,reddit,Dankestmemes",

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import requests
 import json
 from utils.Scalegif import scale_gif
+import random
 
 load_dotenv()
 
@@ -36,11 +37,15 @@ class RedditBot():
         subreddit = self.reddit.subreddit(sub)
         posts = []
         for submission in subreddit.top("day", limit=100):
+        # for submission in subreddit.new(limit=10):
             if submission.stickied:
                 print("Mod Post")
             else:
                 posts.append(submission)
+            # print(f"Submission: {submission}")
 
+        random.shuffle(posts)
+        print("Returning %i posts." % len(posts))
         return posts
 
     def create_data_folder(self):
